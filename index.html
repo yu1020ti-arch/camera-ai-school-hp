@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#FBF7F1">
 
 <!-- セキュリティ設定：許可した場所以外からのプログラム・画像・フォントの読み込みを遮断（CSP） -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://img.youtube.com https://picsum.photos https://fastly.picsum.photos; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://img.youtube.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self' https://*.workers.dev; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'">
 <!-- 外部サイトへ移動する際に閲覧者の情報を渡しすぎない設定 -->
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
@@ -279,6 +279,95 @@ img.story-card__avatar{display:inline-block;}
   background:none;border:none;cursor:pointer;line-height:1;
 }
 
+/* ===== 受講生専用チャット ===== */
+.chat-fab{
+  position:fixed;right:20px;bottom:20px;z-index:150;
+  display:flex;align-items:center;gap:8px;
+  background:var(--pink);color:#fff;border:none;cursor:pointer;
+  border-radius:999px;padding:14px 22px;
+  font-family:'Zen Maru Gothic',sans-serif;font-size:14px;font-weight:700;
+  box-shadow:0 6px 20px rgba(201,127,127,.45);
+  transition:transform .25s,background .25s,opacity .25s;
+}
+.chat-fab:hover{transform:translateY(-3px);background:var(--pink-deep);}
+.chat-fab.hide{opacity:0;pointer-events:none;}
+.chat-fab__icon{font-size:18px;}
+.chat-panel{
+  position:fixed;right:20px;bottom:20px;z-index:160;
+  width:min(370px,calc(100vw - 40px));height:min(560px,calc(100dvh - 40px));
+  background:var(--white);border-radius:20px;overflow:hidden;
+  box-shadow:0 14px 44px rgba(60,45,30,.3);
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;
+  transition:opacity .25s,transform .25s;
+}
+.chat-panel.open{opacity:1;transform:none;pointer-events:auto;}
+.chat-panel [hidden]{display:none !important;}
+.chat-head{
+  display:flex;align-items:center;gap:10px;
+  background:var(--pink);color:#fff;padding:14px 16px;flex-shrink:0;
+}
+.chat-head__avatar{
+  width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.chat-head__name{font-size:15px;font-weight:700;line-height:1.3;}
+.chat-head__sub{font-size:11px;opacity:.9;}
+.chat-close{
+  margin-left:auto;background:none;border:none;color:#fff;
+  font-size:26px;line-height:1;cursor:pointer;padding:4px;
+}
+.chat-gate{padding:34px 26px;display:flex;flex-direction:column;gap:14px;text-align:center;}
+.chat-gate__text{font-size:13.5px;line-height:1.9;}
+.chat-gate__input{
+  font-family:'Zen Maru Gothic',sans-serif;font-size:15px;text-align:center;
+  border:1.5px solid var(--beige-deep);border-radius:12px;padding:12px;
+}
+.chat-gate__input:focus{outline:none;border-color:var(--pink);}
+.chat-gate__btn{
+  font-family:'Zen Maru Gothic',sans-serif;font-size:14px;font-weight:700;
+  background:var(--pink);color:#fff;border:none;border-radius:999px;
+  padding:12px;cursor:pointer;transition:background .25s;
+}
+.chat-gate__btn:hover{background:var(--pink-deep);}
+.chat-gate__err{font-size:12px;color:#C0392B;min-height:1em;}
+.chat-body{display:flex;flex-direction:column;flex:1;min-height:0;}
+.chat-messages{
+  flex:1;overflow-y:auto;padding:16px 14px;
+  display:flex;flex-direction:column;gap:10px;background:var(--cream);
+}
+.chat-msg{
+  max-width:82%;padding:10px 14px;border-radius:16px;
+  font-size:13.5px;line-height:1.8;white-space:pre-wrap;word-break:break-word;
+}
+.chat-msg--bot{background:var(--white);border-bottom-left-radius:4px;align-self:flex-start;box-shadow:0 2px 8px rgba(84,72,60,.08);}
+.chat-msg--user{background:var(--pink);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
+.chat-msg--typing{color:var(--brown-light);}
+.chat-inputrow{
+  display:flex;align-items:flex-end;gap:8px;
+  padding:10px 12px;border-top:1px solid var(--beige);flex-shrink:0;background:var(--white);
+}
+.chat-input{
+  flex:1;resize:none;font-family:'Zen Maru Gothic',sans-serif;font-size:14px;
+  border:1.5px solid var(--beige-deep);border-radius:14px;padding:10px 14px;
+  max-height:90px;line-height:1.6;
+}
+.chat-input:focus{outline:none;border-color:var(--pink);}
+.chat-send{
+  width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--pink);color:#fff;font-size:16px;flex-shrink:0;
+  transition:background .25s;
+}
+.chat-send:hover{background:var(--pink-deep);}
+.chat-send:disabled{opacity:.5;cursor:default;}
+.chat-note{
+  font-size:10.5px;color:var(--brown-light);text-align:center;
+  padding:0 12px 10px;background:var(--white);flex-shrink:0;
+}
+@media(max-width:640px){
+  .chat-panel{right:10px;bottom:10px;width:calc(100vw - 20px);height:min(560px,calc(100dvh - 20px));}
+}
+
 /* ===== フェードイン ===== */
 .fade{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
 .fade.show{opacity:1;transform:none;}
@@ -401,5 +490,6 @@ img.story-card__avatar{display:inline-block;}
 <!-- 掲載内容（動画・素材・写真のリスト）は data.js を編集してください -->
 <script src="data.js"></script>
 <script src="main.js"></script>
+<script src="chat.js"></script>
 </body>
 </html>
