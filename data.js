@@ -25,12 +25,14 @@ const TALK_INTRO = `
 `;
 
 // --- 対談動画（文章の下に表示されます） ---
+// YouTubeのURLならサムネイル自動取得。UTAGEなど他のサービスの動画は
+// thumb: にサムネイル画像を指定してください（photosフォルダ推奨）。
 const TALK_VIDEOS = [
   {
-    title: "【対談】写真がもっと好きになる、AI時代のカメラの楽しみ方",
-    desc: "スクールの想いと、これからの学び方についてたっぷり語りました",
-    url: "https://www.youtube.com/",   // ←実際のYouTube URLに差し替え
-    thumb: "https://picsum.photos/seed/talk1/800/450",  // ←URL差し替え後はこの行ごと削除でOK（自動取得されます）
+    title: "【対談】みささん｜カメラを持っていないところからのスタート",
+    desc: "カメラなしの初心者から始めたみささんに、受講後の変化をたっぷり伺いました",
+    url: "https://utage-system.com/video/IvRXvhv9Vq4g",
+    thumb: "photos/talk-misa.jpg",
   },
   {
     title: "【対談】受講生ママさんに聞く「写真と暮らしが変わった話」",
