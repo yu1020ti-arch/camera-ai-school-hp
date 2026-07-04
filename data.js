@@ -43,7 +43,9 @@ const TALK_VIDEOS = [
 // --- 受講生の変化（Before→After事例集） ---
 // 対談動画の文字起こしから抜粋した事例をここに溜めていきます。
 // { ... }, のかたまりを増やせば、事例が何件でも追加できます。
-// role（属性）・voice（本人のひとこと）・photo（顔写真）は省略OK。
+// 以下は省略OK：
+//   role（属性）／voice（本人のひとこと）／photo（顔写真）
+//   beforePhoto・afterPhoto（作品写真のビフォーアフター。photosフォルダに入れて指定）
 // ※下の3件はデザイン確認用の仮の事例です。実データが入ったら差し替えます。
 const STORIES = [
   {
@@ -51,6 +53,8 @@ const STORIES = [
     role: "小学生ママ・受講6ヶ月",
     before: "一眼レフを買ったものの設定が難しくてずっとオートモード。運動会の写真はブレてばかりで、結局スマホで撮っていました。",
     after: "F値とシャッタースピードを自分で決められるように。今年の運動会では徒競走の流し撮りに成功して、家族に「プロみたい！」と言われました。",
+    beforePhoto: "https://picsum.photos/seed/bp1/640/480",  // ←実写真なら "photos/m-before.jpg" のように
+    afterPhoto: "https://picsum.photos/seed/ap1/640/480",
     voice: "「撮った写真を家族が楽しみに待ってくれるのが、いちばん嬉しいです」",
   },
   {
